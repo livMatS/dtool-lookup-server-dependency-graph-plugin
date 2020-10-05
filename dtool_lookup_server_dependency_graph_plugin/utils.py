@@ -18,6 +18,11 @@ from .config import Config
 logger = logging.getLogger(__name__)
 
 
+def config_to_dict(username):
+    # TODO: check on privileges
+    return Config.to_dict()
+
+
 def _list_to_collection_name(ls, prefix=Config.MONGO_DEPENDENCY_VIEW_PREFIX):
     """Convert a list of str to a unique, valid mongo collection name.
 
@@ -59,7 +64,7 @@ def _assert_list_of_mongo_keys(ls):
 
 def _list_collection_names(prefix=Config.MONGO_DEPENDENCY_VIEW_PREFIX):
     """List all collections whose name starts with prefix."""
-    filter = {"name": {"$regex": "^(?!{}\.)".format(prefix)}}
+    filter = {"name": {"$regex": "^(?!{})".format(prefix)}}
     return mongo.db.list_collection_names(filter=filter)
 
 
@@ -68,7 +73,7 @@ def _list_collection_names(prefix=Config.MONGO_DEPENDENCY_VIEW_PREFIX):
 def assert_dependency_view_bookkeeping_collection(func):
     """Assure the existance of the dependency view cache bookkeeping collection."""
     def wrapper_assert_dependency_view_bookkeeping_collection(*args, **kwargs):
-        if Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING not in mongo.db.list_collection_names:
+        if Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING not in mongo.db.list_collection_names():
             mongo.db.create_collection(Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING)
         return func(*args, **kwargs)
     return wrapper_assert_dependency_view_bookkeeping_collection
@@ -85,9 +90,9 @@ def _get_dependency_view_bookkeeping_record(dependency_keys):
 @assert_dependency_view_bookkeeping_collection
 def _create_dependency_view_bookkeeping_record(name, dependency_keys):
     ret = mongo.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].insert_one(
-        {'name': name, 'keys': dependency_keys, 'accessed_on': datetime.datetime.uctnow()})
+        {'name': name, 'keys': dependency_keys, 'accessed_on': datetime.datetime.utcnow()})
     # drop oldest entry if number of documents exceeds allowed maximum
-    count = mongo.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].count_documents()
+    count = mongo.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].count_documents({})
     if count > Config.MONGO_DEPENDENCY_VIEW_CACHE_SIZE:
         # get least recently accessed view and drop
         to_drop = mongo.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].find_one(sort=[('accessed_on', pymongo.ASCENDING)])
@@ -104,7 +109,7 @@ def _create_dependency_view_bookkeeping_record(name, dependency_keys):
 def _update_dependency_view_bookkeeping_record(name):
     """Updated record to dependency view bookkeeping collection or add if new."""
     return mongo.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].update_one(
-        {'name': name}, {'$set': {'accessed_on': datetime.datetime.uctnow()}})
+        {'name': name}, {'$set': {'accessed_on': datetime.datetime.utcnow()}})
 
 
 # mid-level dependency view helpers
@@ -212,7 +217,8 @@ def dependency_graph_by_user_and_uuid(username, uuid, dependency_keys=Config.DEP
     post_query = _dict_to_mongo_query(post_query)
 
     datasets = []
-    mongo_aggregation = query_dependency_graph(pre_query, post_query,
+    mongo_aggregation = query_dependency_graph(pre_query=pre_query,
+                                               post_query=post_query,
                                                dependency_keys=dependency_keys,
                                                mongo_dependency_view=dependency_view)
     logger.debug("Constructed mongo aggregation: {}".format(mongo_aggregation))

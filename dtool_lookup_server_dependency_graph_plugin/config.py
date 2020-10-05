@@ -3,6 +3,8 @@ import os
 
 from dtool_lookup_server import mongo, MONGO_COLLECTION
 
+import dtool_lookup_server_dependency_graph_plugin
+
 AFFIRMATIVE_EXPRESSIONS = ['true', '1', 'y', 'yes', 'on']
 
 
@@ -52,6 +54,7 @@ class Config(object):
     @classmethod
     def to_dict(cls):
         """Convert server configuration into dict."""
+        d = {'version': dtool_lookup_server_dependency_graph_plugin.__version__}
         for k, v in cls.__dict__.items():
             # select only capitalized fields
             if k.upper() == k:

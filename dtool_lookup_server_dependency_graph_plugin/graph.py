@@ -74,7 +74,6 @@ def merge_dependencies(dependency_keys=Config.DEPENDENCY_KEYS):
             }
         }
     ]
-
     return aggregation
 
 
@@ -199,9 +198,9 @@ def build_undirected_adjecency_lists(dependency_keys=Config.DEPENDENCY_KEYS):
 # Currently, the dependency graph is built based on uuids only, meaning the dep
 # graph query below will only yield one arbitrary dataset per uuid. Desired
 # behavior would be to yield all redundant dataset entries for a uuid.
-def query_dependency_graph(pre_query, post_query=None,
+def query_dependency_graph(mongo_dependency_view,
+                           pre_query, post_query=None,
                            dependency_keys=Config.DEPENDENCY_KEYS,
-                           mongo_dependency_view=Config.MONGO_DEPENDENCY_VIEW,
                            mongo_collection=MONGO_COLLECTION):
     """Aggregation pipeline for querying dependency view on datasets collection.
 
