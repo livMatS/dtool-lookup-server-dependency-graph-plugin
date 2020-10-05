@@ -1,7 +1,7 @@
 """Aggregation pipelines for graph operations."""
 
-from dtool_lookup_server.config import Config
-
+from dtool_lookup_server_dependency_graph_plugin.config import Config
+from dtool_lookup_server import MONGO_COLLECTION
 
 # a regular expression to filter valid v4 UUIDs
 UUID_v4_REGEX = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}'
@@ -9,11 +9,11 @@ UUID_v4_REGEX = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4][0-9a-fA-F]{3}-[89abAB][0-9a-f
 
 # most of those 'functions' are pretty static and just wrapped in function
 # definitions for convenience.
-def unwind_dependencies():
+def unwind_dependencies(dependency_keys=Config.DEPENDENCY_KEYS):
     """Create parallel aggregation pipelines for unwinding all configured dependency keys."""
 
     parallel_aggregations = []
-    for dep_key in Config.DEPENDENCY_KEYS:
+    for dep_key in dependency_keys:
         aggregation = []
         hierarchy = dep_key.split('.')
 
@@ -41,13 +41,13 @@ def unwind_dependencies():
     return parallel_aggregations
 
 
-def merge_dependencies():
+def merge_dependencies(dependency_keys=Config.DEPENDENCY_KEYS):
     """Aggregate (directed) dependency graph edges.
 
     All configured dependency keys are merged in a key-agnostic 'dependencies'
     field."""
 
-    parallel_aggregations = unwind_dependencies()
+    parallel_aggregations = unwind_dependencies(dependency_keys)
 
     aggregation = [
         {
@@ -118,10 +118,10 @@ def group_inverse_dependencies():
     return aggregation
 
 
-def build_undirected_adjecency_lists():
+def build_undirected_adjecency_lists(dependency_keys=Config.DEPENDENCY_KEYS):
     """Aggregate undirected adjacency lists."""
     aggregation = [
-        *merge_dependencies(),
+        *merge_dependencies(dependency_keys),
         {
             '$facet': {
                 'derived_from': group_dependencies(),
@@ -194,21 +194,31 @@ def build_undirected_adjecency_lists():
     ]
     return aggregation
 
+
 # TODO: datasets are uniquely identified by uuid AND base_uri.
 # Currently, the dependency graph is built based on uuids only, meaning the dep
 # graph query below will only yield one arbitrary dataset per uuid. Desired
 # behavior would be to yield all redundant dataset entries for a uuid.
-def query_dependency_graph(pre_query, post_query=None):
+def query_dependency_graph(pre_query, post_query=None,
+                           dependency_keys=Config.DEPENDENCY_KEYS,
+                           mongo_dependency_view=Config.MONGO_DEPENDENCY_VIEW,
+                           mongo_collection=MONGO_COLLECTION):
     """Aggregation pipeline for querying dependency view on datasets collection.
 
-    pre_query selects all documents for whicht to query the dependency graph.
-    post_query allows removing certain documents from the results."""
+    :param pre_query: selects all documents for whicht to query the dependency graph.
+    :param post_query: allows removing certain documents from the results.
+    :param dependency_keys: list of keys identifying source datasets.
+    :param mongo_dependency_view: name of the plugin's view on a bidirectional dependency graph.
+    :param mongo_collection : name of the lookup server's central dataset metadata collection.
+
+    :returns: Aggregation pipeline as list of dicts.
+    """
 
     pre_match = {'$match': pre_query}
 
     graph_lookup = {
         '$graphLookup': {
-          'from': Config.MONGO_DEPENDENCY_VIEW,
+          'from': mongo_dependency_view,
           'startWith': '$uuid',
           'connectFromField': 'dependencies',
           'connectToField': 'uuid',
@@ -226,7 +236,7 @@ def query_dependency_graph(pre_query, post_query=None):
 
     lookup = {
         '$lookup': {
-           'from': Config.MONGO_COLLECTION,
+           'from': mongo_collection,
            'localField': 'uuid',
            'foreignField': 'uuid',
            'as': 'dataset',
@@ -253,7 +263,7 @@ def query_dependency_graph(pre_query, post_query=None):
     # For each configured dependency key, the pipeline splits, unwinds and
     # projects the key in a uniformely named field 'derived_from'
     parallel_aggregations = []
-    for dep_key in Config.DEPENDENCY_KEYS:
+    for dep_key in dependency_keys:
         cur_aggregation = []
         hierarchy = dep_key.split('.')
 

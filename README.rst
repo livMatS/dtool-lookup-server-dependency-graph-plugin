@@ -1,5 +1,5 @@
-Dtool Lookup Server
-===================
+Dtool Lookup Server Dependency Graph Plugin
+===========================================
 
 - GitHub: https://github.com/IMTEK-Simulation/dtool-lookup-server-dependency-graph-plugin
 - PyPI: https://pypi.python.org/pypi/dtool-lookup-server-dependency-graph-plugin
@@ -23,7 +23,7 @@ However, if one has to manage more than a hundred datasets it can be helpful
 to have the datasets' metadata stored in a central server to enable one to
 quickly find datasets of interest.
 
-The `dtool-lookup-server <https://github.com/jic-dtool/dtool-lookup-server`_ 
+The `dtool-lookup-server <https://github.com/jic-dtool/dtool-lookup-server>`_
 provides a web API for registering datasets' metadata
 and provides functionality to lookup, list and search for datasets.
 
