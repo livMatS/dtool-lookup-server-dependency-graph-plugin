@@ -10,13 +10,22 @@ from flask_jwt_extended import (
 )
 from dtool_lookup_server import AuthenticationError
 
+try:
+    from importlib.metadata import version, PackageNotFoundError
+except ModuleNotFoundError:
+    from importlib_metadata import version, PackageNotFoundError
+
+try:
+    __version__ = version(__name__)
+except PackageNotFoundError:
+    # package is not installed
+   pass
+
 from .utils import (
     dependency_graph_by_user_and_uuid,
     config_to_dict,
 )
 
-
-__version__ = '0.1.1'
 
 graph_bp = Blueprint("graph", __name__, url_prefix="/graph")
 
