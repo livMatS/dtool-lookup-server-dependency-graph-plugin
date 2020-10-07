@@ -21,10 +21,10 @@ class Config(object):
     MONGO_DEPENDENCY_VIEW_PREFIX = os.environ.get('DTOOL_LOOKUP_SERVER_MONGO_DEPENDENCY_VIEW_PREFIX', 'dep:')
 
     # name of bookkeeping collection for cached dependency views
-    MONGO_DEPENDENCY_VIEW_BOOKKEEPING = os.environ.get('MONGO_DEPENDENCY_VIEW_BOOKKEEPING', 'dep_views')
+    MONGO_DEPENDENCY_VIEW_BOOKKEEPING = os.environ.get('DTOOL_LOOKUP_SERVER_MONGO_DEPENDENCY_VIEW_BOOKKEEPING', 'dep_views')
 
     # maximum number of cached views
-    MONGO_DEPENDENCY_VIEW_CACHE_SIZE = int(os.environ.get('MONGO_DEPENDENCY_VIEW_CACHE_SIZE', '10'))
+    MONGO_DEPENDENCY_VIEW_CACHE_SIZE = int(os.environ.get('DTOOL_LOOKUP_SERVER_MONGO_DEPENDENCY_VIEW_CACHE_SIZE', '10'))
 
     # Enforce rebuilding dependency views at each query.
     FORCE_REBUILD_DEPENDENCY_VIEW = os.environ.get('DTOOL_LOOKUP_SERVER_FORCE_REBUILD_DEPENDENCY_VIEW',

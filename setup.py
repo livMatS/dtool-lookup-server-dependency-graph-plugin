@@ -2,7 +2,8 @@ from setuptools import setup
 
 url = "https://github.com/IMTEK-Simulation/dtool-lookup-server-dependency-graph-plugin"
 version = "0.1.0"
-readme = open('README.rst').read()
+with open('README.rst', 'r') as fh:
+    readme = fh.read()
 
 setup(
     name="dtool-lookup-server-dependency-graph-plugin",
@@ -22,5 +23,5 @@ setup(
         "dtool-lookup-server",
     ],
     download_url="{}/tarball/{}".format(url, version),
-    license="MIT"
+    license="MIT",
 )
