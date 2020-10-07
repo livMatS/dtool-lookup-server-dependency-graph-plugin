@@ -1,7 +1,7 @@
 from setuptools import setup
-
+from dtool_lookup_server_dependency_graph_plugin import __version__
 url = "https://github.com/IMTEK-Simulation/dtool-lookup-server-dependency-graph-plugin"
-version = "0.1.0"
+version = __version__
 with open('README.rst', 'r') as fh:
     readme = fh.read()
 

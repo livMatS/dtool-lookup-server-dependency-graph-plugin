@@ -256,7 +256,7 @@ will return the current dependency graph plugin configuration with all keys in l
       "mongo_dependency_view_bookkeeping": "dep_views",
       "mongo_dependency_view_cache_size": 10,
       "mongo_dependency_view_prefix": "dep:",
-      "version": "0.1.0"
+      "version": "0.1.1"
     }
 
 
