@@ -9,9 +9,8 @@ Dtool Lookup Server Dependency Graph Plugin
 Features
 --------
 
-- Build views on dataset dependency trees based on arbitrary connecting keys
 - Use a dataset UUID to lookup all datasets within the same dependency graph
--
+- Build views on dataset dependency trees based on arbitrary connecting keys
 
 
 Introduction
@@ -87,9 +86,9 @@ following
          {'uuid': 'faa44606-cb86-4877-b9ea-643a3777e021'}]}}
 
 
- Setting
+Setting
 
- .. code-block:: bash
+.. code-block:: bash
 
      export DTOOL_LOOKUP_SERVER_DYNAMIC_DEPENDENCY_KEYS=True
 
