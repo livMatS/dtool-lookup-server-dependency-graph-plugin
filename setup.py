@@ -26,7 +26,7 @@ setup(
     },
     setup_requires=['setuptools_scm'],
     install_requires=[
-        "dtool-lookup-server",
+        "dtool-lookup-server>=0.15.0",
     ],
     download_url="{}/tarball/{}".format(url, version),
     license="MIT",
