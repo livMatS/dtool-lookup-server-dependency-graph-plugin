@@ -4,6 +4,7 @@ import datetime
 import logging
 import pymongo
 
+import dtoolcore.utils
 from dtool_lookup_server import mongo, MONGO_COLLECTION
 from dtool_lookup_server.utils import (
     _preprocess_privileges,
@@ -223,6 +224,14 @@ def dependency_graph_by_user_and_uuid(username, uuid, dependency_keys=Config.DEP
                                                mongo_dependency_view=dependency_view)
     logger.debug("Constructed mongo aggregation: {}".format(mongo_aggregation))
     cx = mongo.db[MONGO_COLLECTION].aggregate(mongo_aggregation)
+
     for ds in cx:
+        # Convert datetime object to float timestamp.
+        for key in ("created_at", "frozen_at"):
+            if key in ds:
+                datetime_obj = ds[key]
+                ds[key] = dtoolcore.utils.timestamp(datetime_obj)
+
         datasets.append(ds)
+
     return datasets
