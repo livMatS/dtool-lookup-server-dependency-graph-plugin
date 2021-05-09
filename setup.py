@@ -7,7 +7,7 @@ def local_scheme(version):
     to be able to upload to Test PyPI"""
     return ""
 
-url = "https://github.com/IMTEK-Simulation/dtool-lookup-server-plugin-scaffolding"
+url = "https://github.com/IMTEK-Simulation/dtool-lookup-server-dependency-graph-plugin"
 readme = open('README.rst').read()
 
 setup(
