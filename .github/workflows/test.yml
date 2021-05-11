@@ -9,7 +9,7 @@ jobs:
       matrix:
         python-version: [3.6, 3.7, 3.8]
         mongodb-version: [4.0, 4.2]
-        dtool-lookup-server-version: [0.15.0]
+        dtool-lookup-server-version: [0.15.0, 0.16.0, 0.17.0]
 
     steps:
     - name: Git checkout
@@ -32,6 +32,7 @@ jobs:
         pip install flake8 pytest
         pip install dtool-lookup-server==${{ matrix.dtool-lookup-server-version }}
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install Flask-JWT-Extended==3.25.0  # version 4.2.0 (and possibly earlier ones after 3.25.0) breaks plugin
         pip install .
         pip list
 
