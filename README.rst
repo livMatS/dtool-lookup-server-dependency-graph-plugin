@@ -1,6 +1,10 @@
 Dtool Lookup Server Dependency Graph Plugin
 ===========================================
 
+.. image:: https://badge.fury.io/py/dtool-lookup-server-dependency-graph-plugin.svg
+    :target: https://badge.fury.io/py/dtool-lookup-server-dependency-graph-plugin
+    :alt: PyPi package
+
 - GitHub: https://github.com/IMTEK-Simulation/dtool-lookup-server-dependency-graph-plugin
 - PyPI: https://pypi.python.org/pypi/dtool-lookup-server-dependency-graph-plugin
 - Free software: MIT License
