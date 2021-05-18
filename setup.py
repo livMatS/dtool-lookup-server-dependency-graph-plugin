@@ -26,7 +26,7 @@ setup(
     },
     setup_requires=['setuptools_scm'],
     install_requires=[
-        "dtool-lookup-server>=0.15.0",
+        "dtool-lookup-server>=0.17.2",
         "dtoolcore>=3.17.0",
     ],
     download_url="{}/tarball/{}".format(url, version),
