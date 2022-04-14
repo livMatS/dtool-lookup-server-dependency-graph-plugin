@@ -56,7 +56,7 @@ def lookup_dependency_graph_by_default_keys(pagination_parameters: PaginationPar
 
 
 @graph_bp.route("/lookup/<uuid>", methods=["POST"])
-@bp.arguments(DependencyKeysSchema(partial=True))
+@graph_bp.arguments(DependencyKeysSchema(partial=True))
 @graph_bp.response(200, DatasetSchema(many=True))
 @graph_bp.paginate()
 @jwt_required()
