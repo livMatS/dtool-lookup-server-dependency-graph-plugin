@@ -10,6 +10,7 @@ from flask_jwt_extended import (
 from flask_smorest import Blueprint
 
 from dtool_lookup_server import AuthenticationError
+from dtool_lookup_server.schemas import DatasetSchema
 
 try:
     from importlib.metadata import version, PackageNotFoundError
