@@ -8,6 +8,7 @@ from flask_jwt_extended import (
     get_jwt_identity,
 )
 from flask_smorest import Blueprint
+from flask_smorest.pagination import PaginationParameters
 
 from dtool_lookup_server import AuthenticationError
 from dtool_lookup_server.sql_models import DatasetSchema
