@@ -6,5 +6,4 @@ from marshmallow.fields import (
 
 
 class DependencyKeysSchema(Schema):
-    base_uri = String()
-    users_with_register_permissions = List(String)
+    dependency_keys = List(String)
