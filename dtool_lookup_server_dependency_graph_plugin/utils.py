@@ -5,23 +5,21 @@ import logging
 import pymongo
 
 import dtoolcore.utils
-from dtool_lookup_server import mongo, MONGO_COLLECTION
-from dtool_lookup_server.utils import (
-    _preprocess_privileges,
-    _dict_to_mongo_query,
-)
+
+from flask import current_app
+
+from dtool_lookup_server.utils import _preprocess_privileges
+from dtool_lookup_server_direct_mongo_plugin.utils import _dict_to_mongo_query
+
+from . import DependencyGraphExtension
 from .graph import (
     query_dependency_graph,
     build_undirected_adjecency_lists,
 )
 from .config import Config
 
+
 logger = logging.getLogger(__name__)
-
-
-def config_to_dict(username):
-    # TODO: check on privileges
-    return Config.to_dict()
 
 
 def _list_to_collection_name(ls, prefix=Config.MONGO_DEPENDENCY_VIEW_PREFIX):
@@ -39,7 +37,7 @@ def _list_to_collection_name(ls, prefix=Config.MONGO_DEPENDENCY_VIEW_PREFIX):
             raise ValueError('No dollar char ($) allowed in collection name.')
 
     coll_name = prefix + ','.join(ls)
-    coll_namespace = mongo.db.name + '.' + coll_name
+    coll_namespace = DependencyGraphExtension.db.name + '.' + coll_name
     if len(coll_namespace) > 255:
         raise ValueError('Maximum namespace length is 255, but len("{}") == {}.'.format(coll_namespace,
                                                                                         len(coll_namespace)))
@@ -66,7 +64,7 @@ def _assert_list_of_mongo_keys(ls):
 def _list_collection_names(prefix=Config.MONGO_DEPENDENCY_VIEW_PREFIX):
     """List all collections whose name starts with prefix."""
     filter = {"name": {"$regex": "^(?!{})".format(prefix)}}
-    return mongo.db.list_collection_names(filter=filter)
+    return DependencyGraphExtension.db.list_collection_names(filter=filter)
 
 
 # low-level bookkeeping record helpers
@@ -74,8 +72,8 @@ def _list_collection_names(prefix=Config.MONGO_DEPENDENCY_VIEW_PREFIX):
 def assert_dependency_view_bookkeeping_collection(func):
     """Assure the existance of the dependency view cache bookkeeping collection."""
     def wrapper_assert_dependency_view_bookkeeping_collection(*args, **kwargs):
-        if Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING not in mongo.db.list_collection_names():
-            mongo.db.create_collection(Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING)
+        if Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING not in DependencyGraphExtension.db.list_collection_names():
+            DependencyGraphExtension.db.create_collection(Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING)
         return func(*args, **kwargs)
     return wrapper_assert_dependency_view_bookkeeping_collection
 
@@ -84,32 +82,32 @@ def assert_dependency_view_bookkeeping_collection(func):
 def _get_dependency_view_bookkeeping_record(dependency_keys):
     """Query bookkeeping record for unique set of dependency keys."""
     query = {'keys': dependency_keys}
-    return mongo.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].find_one(query)
+    return DependencyGraphExtension.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].find_one(query)
 
 
 
 @assert_dependency_view_bookkeeping_collection
 def _create_dependency_view_bookkeeping_record(name, dependency_keys):
-    ret = mongo.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].insert_one(
+    ret = DependencyGraphExtension.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].insert_one(
         {'name': name, 'keys': dependency_keys, 'accessed_on': datetime.datetime.utcnow()})
     # drop oldest entry if number of documents exceeds allowed maximum
-    count = mongo.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].count_documents({})
+    count = DependencyGraphExtension.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].count_documents({})
     if count > Config.MONGO_DEPENDENCY_VIEW_CACHE_SIZE:
         # get least recently accessed view and drop
-        to_drop = mongo.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].find_one(sort=[('accessed_on', pymongo.ASCENDING)])
+        to_drop = DependencyGraphExtension.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].find_one(sort=[('accessed_on', pymongo.ASCENDING)])
         logger.warning("Maximum dependency view cache size %s exceeded by %s. "
                        "Dropping least recently accessed view '%s': %s (%s)." % (
                             Config.MONGO_DEPENDENCY_VIEW_CACHE_SIZE, count,
                             to_drop["name"], to_drop["keys"], to_drop["accessed_on"]))
-        mongo.db[to_drop["name"]].drop()
-        mongo.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].delete_one(to_drop)
+        DependencyGraphExtension.db[to_drop["name"]].drop()
+        DependencyGraphExtension.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].delete_one(to_drop)
     return ret
 
 
 @assert_dependency_view_bookkeeping_collection
 def _update_dependency_view_bookkeeping_record(name):
     """Updated record to dependency view bookkeeping collection or add if new."""
-    return mongo.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].update_one(
+    return DependencyGraphExtension.db[Config.MONGO_DEPENDENCY_VIEW_BOOKKEEPING].update_one(
         {'name': name}, {'$set': {'accessed_on': datetime.datetime.utcnow()}})
 
 
@@ -124,14 +122,14 @@ def _create_dependency_view(dependency_keys):
     datestring = datetime.datetime.utcnow().isoformat()
     name = Config.MONGO_DEPENDENCY_VIEW_PREFIX + datestring
 
-    if name in mongo.db.list_collection_names():
+    if name in DependencyGraphExtension.db.list_collection_names():
         raise ValueError("View '%s' exists already." % name)  # must never happen
 
     aggregation_pipeline = build_undirected_adjecency_lists(dependency_keys)
     logger.debug("Create view '%s' with %s." % (name, aggregation_pipeline))
-    mongo.db.command(
+    DependencyGraphExtension.db.command(
         'create',
-        name, viewOn=MONGO_COLLECTION,
+        name, viewOn=current_app.config['MONGO_COLLECTION'],
         pipeline=aggregation_pipeline)
     # raises pymongo.errors.OperationFailure
     _create_dependency_view_bookkeeping_record(name, dependency_keys)
@@ -152,7 +150,7 @@ def _get_dependency_view_from_keys(dependency_keys=Config.DEPENDENCY_KEYS):
     dependency_view = dependency_view_doc["name"]
 
     # Bookkeeping record exists but view disappeared, recreate.
-    if dependency_view not in mongo.db.list_collection_names():
+    if dependency_view not in DependencyGraphExtension.db.list_collection_names():
         logger.warning("Bookkeeping record for view '{}' still exists, "
                        "while view itself vanished. Recreating.".format(dependency_view))
         dependency_view = _create_dependency_view(dependency_keys)
@@ -161,7 +159,7 @@ def _get_dependency_view_from_keys(dependency_keys=Config.DEPENDENCY_KEYS):
     # View exists, but FORCE_REBUILD_DEPENDENCY_VIEW enforces recreation at every query.
     if Config.FORCE_REBUILD_DEPENDENCY_VIEW:
         logger.warning("Forced to drop exisitng view '{}'.".format(dependency_view))
-        mongo.db[dependency_view].drop()
+        DependencyGraphExtension.db[dependency_view].drop()
         dependency_view = _create_dependency_view(dependency_keys)
         return dependency_view
 
@@ -223,7 +221,7 @@ def dependency_graph_by_user_and_uuid(username, uuid, dependency_keys=Config.DEP
                                                dependency_keys=dependency_keys,
                                                mongo_dependency_view=dependency_view)
     logger.debug("Constructed mongo aggregation: {}".format(mongo_aggregation))
-    cx = mongo.db[MONGO_COLLECTION].aggregate(mongo_aggregation)
+    cx = DependencyGraphExtension.db[current_app.config['MONGO_COLLECTION']].aggregate(mongo_aggregation)
 
     for ds in cx:
         # Convert datetime object to float timestamp.

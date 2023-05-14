@@ -1,7 +1,7 @@
 """Aggregation pipelines for graph operations."""
 
-from dtool_lookup_server_dependency_graph_plugin.config import Config
-from dtool_lookup_server import MONGO_COLLECTION
+from dtool_lookup_server_dependency_graph_plugin.config import Config as dependency_graph_plugin_config
+from dtool_lookup_server_direct_mongo_plugin.config import Config as direct_mongo_plugin_config
 
 # a regular expression to filter valid v4 UUIDs
 UUID_v4_REGEX = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}'
@@ -9,7 +9,7 @@ UUID_v4_REGEX = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4][0-9a-fA-F]{3}-[89abAB][0-9a-f
 
 # most of those 'functions' are pretty static and just wrapped in function
 # definitions for convenience.
-def unwind_dependencies(dependency_keys=Config.DEPENDENCY_KEYS):
+def unwind_dependencies(dependency_keys=dependency_graph_plugin_config.DEPENDENCY_KEYS):
     """Create parallel aggregation pipelines for unwinding all configured dependency keys."""
 
     parallel_aggregations = []
@@ -41,7 +41,7 @@ def unwind_dependencies(dependency_keys=Config.DEPENDENCY_KEYS):
     return parallel_aggregations
 
 
-def merge_dependencies(dependency_keys=Config.DEPENDENCY_KEYS):
+def merge_dependencies(dependency_keys=dependency_graph_plugin_config.DEPENDENCY_KEYS):
     """Aggregate (directed) dependency graph edges.
 
     All configured dependency keys are merged in a key-agnostic 'dependencies'
@@ -117,7 +117,7 @@ def group_inverse_dependencies():
     return aggregation
 
 
-def build_undirected_adjecency_lists(dependency_keys=Config.DEPENDENCY_KEYS):
+def build_undirected_adjecency_lists(dependency_keys=dependency_graph_plugin_config.DEPENDENCY_KEYS):
     """Aggregate undirected adjacency lists."""
     aggregation = [
         *merge_dependencies(dependency_keys),
@@ -200,8 +200,8 @@ def build_undirected_adjecency_lists(dependency_keys=Config.DEPENDENCY_KEYS):
 # behavior would be to yield all redundant dataset entries for a uuid.
 def query_dependency_graph(mongo_dependency_view,
                            pre_query, post_query=None,
-                           dependency_keys=Config.DEPENDENCY_KEYS,
-                           mongo_collection=MONGO_COLLECTION):
+                           dependency_keys=dependency_graph_plugin_config.DEPENDENCY_KEYS,
+                           mongo_collection=direct_mongo_plugin_config.MONGO_COLLECTION):
     """Aggregation pipeline for querying dependency view on datasets collection.
 
     :param pre_query: selects all documents for whicht to query the dependency graph.

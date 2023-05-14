@@ -21,13 +21,14 @@ setup(
     url=url,
     entry_points={
         'dtool_lookup_server.blueprints': [
-            'dtool_lookup_server_dependency_graph_plugin=dtool_lookup_server_dependency_graph_plugin:graph_bp',
+            'DependencyGraphExtension=dtool_lookup_server_dependency_graph_plugin:DependencyGraphExtension',
         ],
     },
     setup_requires=['setuptools_scm'],
     install_requires=[
         "dtool-lookup-server>=0.17.2",
         "dtoolcore>=3.17.0",
+        "dtool-lookup-server-direct-mongo-plugin"
     ],
     download_url="{}/tarball/{}".format(url, version),
     license="MIT",

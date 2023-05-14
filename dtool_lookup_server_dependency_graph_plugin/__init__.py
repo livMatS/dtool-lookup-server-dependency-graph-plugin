@@ -1,3 +1,14 @@
+try:
+    from importlib.metadata import version, PackageNotFoundError
+except ModuleNotFoundError:
+    from importlib_metadata import version, PackageNotFoundError
+
+try:
+    __version__ = version(__name__)
+except PackageNotFoundError:
+    # package is not installed
+   pass
+
 from flask import (
     abort,
     jsonify,
@@ -14,16 +25,6 @@ from dtool_lookup_server import AuthenticationError
 from dtool_lookup_server.schemas import ConfigSchema
 from dtool_lookup_server.sql_models import DatasetSchema
 
-try:
-    from importlib.metadata import version, PackageNotFoundError
-except ModuleNotFoundError:
-    from importlib_metadata import version, PackageNotFoundError
-
-try:
-    __version__ = version(__name__)
-except PackageNotFoundError:
-    # package is not installed
-   pass
 
 from .schemas import DependencyKeysSchema
 
@@ -79,14 +80,48 @@ def lookup_dependency_graph_by_custom_keys(dependency_keys: DependencyKeysSchema
     )
 
 
-@graph_bp.route("/config", methods=["GET"])
-@graph_bp.response(200, ConfigSchema)
-@jwt_required()
-def plugin_config():
-    """Return the JSON-serialized dependency graph plugin configuration."""
-    username = get_jwt_identity()
-    try:
-        config = config_to_dict(username)
-    except AuthenticationError:
-        abort(401)
-    return jsonify(config)
+class DependencyGraphExtension(ExtensionABC):
+    """Extensions for building and queryng dependency graphs."""
+
+    # NOTE: Not very neat using class variables here, but the way the plugin
+    # system works now, we need to provide the class-external route above some
+    # means of accessing the database that's configured within the init_app
+    # method here.
+    client = None
+    collection = None
+    db = None
+
+    def init_app(self, app):
+        try:
+            self._mongo_uri = app.config["MONGO_URI"]
+            DependencyGraphExtension.client = MongoClient(self._mongo_uri,
+                                      uuidRepresentation='standard')
+        except KeyError:
+            raise(RuntimeError("Please set the MONGO_URI environment variable"))  # NOQA
+
+        try:
+            self._mongo_db = app.config["MONGO_DB"]
+            DependencyGraphExtension.db = self.client[self._mongo_db]
+        except KeyError:
+            raise(RuntimeError("Please set the MONGO_DB environment variable"))  # NOQA
+
+        try:
+            self._mongo_collection = app.config["MONGO_COLLECTION"]
+            DependencyGraphExtension.collection = self.db[self._mongo_collection]
+        except KeyError:
+            raise(RuntimeError("Please set the MONGO_COLLECTION environment variable"))  # NOQA
+
+    def register_dataset(self, dataset_info):
+        """Does nothing, relies on dtool-lookup-server-direct-mongo-plugin."""
+        pass
+
+    def get_config(self):
+        """Return initial Config object, available app-instance independent."""
+        return Config
+
+    def get_config_secrets_to_obfuscate(self):
+        """Return config secrets never to be exposed clear text."""
+        return CONFIG_SECRETS_TO_OBFUSCATE
+
+    def get_blueprint(self):
+        return graph_bp
