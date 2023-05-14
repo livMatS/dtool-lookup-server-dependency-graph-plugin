@@ -1,21 +1,25 @@
 """Test the /scaffolding/config blueprint route."""
 
 import json
-import dtool_lookup_server_dependency_graph_plugin
 
-from . import tmp_app_with_users  # NOQA
-from . import snowwhite_token
+"""Test the /config blueprint route."""
 
-def test_config_info_route(tmp_app_with_users):  # NOQA
+import json
+
+from . import compare_marked_nested, comparison_marker_from_obj
+
+
+
+def test_config_info_route(tmp_app_with_users, snowwhite_token):  # NOQA
 
     headers = dict(Authorization="Bearer " + snowwhite_token)
     r = tmp_app_with_users.get(
-        "/graph/config",
+        "/config/info",
         headers=headers,
     )
     assert r.status_code == 200
 
-    expected_content = {
+    expected_response = {
         'dependency_keys': ['readme.derived_from.uuid',
                             'annotations.source_dataset_uuid'],
         'dynamic_dependency_keys': True,
@@ -24,7 +28,9 @@ def test_config_info_route(tmp_app_with_users):  # NOQA
         'mongo_dependency_view_bookkeeping': 'dep_views',
         'mongo_dependency_view_cache_size': 10,
         'mongo_dependency_view_prefix': 'dep:',
-        'version': dtool_lookup_server_dependency_graph_plugin.__version__}
+    }
 
     response = json.loads(r.data.decode("utf-8"))
-    assert response == expected_content
+
+    marker = comparison_marker_from_obj(expected_response)
+    assert compare_marked_nested(response, expected_response, marker)

@@ -22,7 +22,6 @@ from flask_smorest import Blueprint
 from flask_smorest.pagination import PaginationParameters
 
 from dtool_lookup_server import AuthenticationError
-from dtool_lookup_server.schemas import ConfigSchema
 from dtool_lookup_server.sql_models import DatasetSchema
 
 
