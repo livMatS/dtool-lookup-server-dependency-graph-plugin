@@ -38,6 +38,8 @@ def test_query_dependency_graph_by_default_keys(tmp_app_with_dependent_data, tes
     for m in marker:
         m['created_at'] = False
         m['frozen_at'] = False
+        m['size_in_bytes'] = False
+        m['number_of_items'] = False
 
     assert compare_marked_nested(response, expected_response, marker)
 
@@ -79,6 +81,8 @@ def test_query_dependency_graph_by_custom_keys(tmp_app_with_dependent_data, test
     for m in marker:
         m['created_at'] = False
         m['frozen_at'] = False
+        m['size_in_bytes'] = False
+        m['number_of_items'] = False
 
     assert compare_marked_nested(response, expected_response, marker)
 
@@ -120,6 +124,8 @@ def test_query_dependency_graph_by_custom_nonexistant_keys(tmp_app_with_dependen
     for m in marker:
         m['created_at'] = False
         m['frozen_at'] = False
+        m['size_in_bytes'] = False
+        m['number_of_items'] = False
 
     assert compare_marked_nested(response, expected_response, marker)
 
@@ -153,6 +159,8 @@ def test_generate_many_dependency_views(tmp_app_with_dependent_data, testing_fam
     for m in marker:
         m['created_at'] = False
         m['frozen_at'] = False
+        m['size_in_bytes'] = False
+        m['number_of_items'] = False
 
     for dependency_keys in dependency_keys_list:
         r = tmp_app_with_dependent_data.post(

@@ -20,7 +20,7 @@ setup(
     use_scm_version={"local_scheme": local_scheme},
     url=url,
     entry_points={
-        'dtool_lookup_server.blueprints': [
+        'dtool_lookup_server.extension': [
             'DependencyGraphExtension=dtool_lookup_server_dependency_graph_plugin:DependencyGraphExtension',
         ],
     },

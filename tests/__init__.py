@@ -52,6 +52,9 @@ def compare_marked_nested(A, B, marker):
     logger = logging.getLogger(__name__)
     if isinstance(marker, dict):
         for k, v in marker.items():
+            if not v:
+                continue
+
             if k not in A:
                 logger.error("{} not in A '{}'.".format(k, A))
                 return False
