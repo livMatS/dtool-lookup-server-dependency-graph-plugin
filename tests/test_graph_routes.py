@@ -55,7 +55,7 @@ def test_query_dependency_graph_by_custom_keys(tmp_app_with_dependent_data, test
     r = tmp_app_with_dependent_data.post(
         "/graph/lookup/{}".format(uuid),
         headers=headers,
-        data=json.dumps(dependency_keys),
+        data=json.dumps({"dependency_keys": dependency_keys}),
         content_type="application/json"
     )
     assert r.status_code == 200
@@ -98,7 +98,7 @@ def test_query_dependency_graph_by_custom_nonexistant_keys(tmp_app_with_dependen
     r = tmp_app_with_dependent_data.post(
         "/graph/lookup/{}".format(uuid),
         headers=headers,
-        data=json.dumps(dependency_keys),
+        data=json.dumps({"dependency_keys": dependency_keys}),
         content_type="application/json"
     )
     assert r.status_code == 200
@@ -166,7 +166,7 @@ def test_generate_many_dependency_views(tmp_app_with_dependent_data, testing_fam
         r = tmp_app_with_dependent_data.post(
             "/graph/lookup/{}".format(uuid),
             headers=headers,
-            data=json.dumps(dependency_keys),
+            data=json.dumps({"dependency_keys": dependency_keys}),
             content_type="application/json"
         )
         assert r.status_code == 200

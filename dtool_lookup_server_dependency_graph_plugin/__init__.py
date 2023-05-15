@@ -296,7 +296,7 @@ def lookup_dependency_graph_by_custom_keys(dependency_keys: DependencyKeysSchema
     username = get_jwt_identity()
     # dependency_keys = request.get_json()
     try:
-        datasets = dependency_graph_by_user_and_uuid(username, uuid, dependency_keys)
+        datasets = dependency_graph_by_user_and_uuid(username, uuid, dependency_keys["dependency_keys"])
     except AuthenticationError:
         abort(401)
     pagination_parameters.item_count = len(datasets)
