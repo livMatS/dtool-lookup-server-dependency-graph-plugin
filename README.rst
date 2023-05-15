@@ -1,11 +1,17 @@
 Dtool Lookup Server Dependency Graph Plugin
 ===========================================
 
-.. image:: https://badge.fury.io/py/dtool-lookup-server-dependency-graph-plugin.svg
-    :target: https://badge.fury.io/py/dtool-lookup-server-dependency-graph-plugin
-    :alt: PyPi package
+.. image:: https://img.shields.io/github/actions/workflow/status/livMatS/dtool-lookup-server-dependency-graph-plugin/test.yml?branch=main
+    :target: https://github.com/livMatS/dtool-lookup-server-dependency-graph-plugin/actions/workflows/test.yml
+    :alt: GitHub Workflow Status
+.. image:: https://img.shields.io/pypi/v/dtool-lookup-server-dependency-graph-plugin
+    :alt: PyPI
+    :target: https://pypi.org/project/dtool-lookup-server-dependency-graph-plugin/
+.. image:: https://img.shields.io/github/v/tag/livMatS/dtool-lookup-server-dependency-graph-plugin
+    :alt: GitHub tag (latest by date)
+    :target: https://github.com/livMatS/dtool-lookup-server-dependency-graph-plugin/tags
 
-- GitHub: https://github.com/IMTEK-Simulation/dtool-lookup-server-dependency-graph-plugin
+- GitHub: https://github.com/livMatS/dtool-lookup-server-dependency-graph-plugin
 - PyPI: https://pypi.python.org/pypi/dtool-lookup-server-dependency-graph-plugin
 - Free software: MIT License
 
@@ -234,33 +240,3 @@ and an according entry within ``dep_views``
 If the total number of such cached views exceeds the allowed maximum value
 configured in ``DTOOL_LOOKUP_SERVER_MONGO_DEPENDENCY_VIEW_CACHE_SIZE``, then
 the view accessed least recently is dropped.
-
-Querying server plugin configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The request
-
-.. code-block:: bash
-
-    $ curl -H "$HEADER" http://localhost:5000/graph/config
-
-will return the current dependency graph plugin configuration with all keys in lowercase
-
-.. code-block:: json
-
-    {
-      "dependency_keys": [
-        "readme.derived_from.uuid",
-        "annotations.source_dataset_uuid"
-      ],
-      "dynamic_dependency_keys": true,
-      "enable_dependency_view": true,
-      "force_rebuild_dependency_view": false,
-      "mongo_dependency_view_bookkeeping": "dep_views",
-      "mongo_dependency_view_cache_size": 10,
-      "mongo_dependency_view_prefix": "dep:",
-      "version": "0.1.1"
-    }
-
-
-See ``dtool_lookup_server_dependency_graph_plugin.config.Config`` for more information.
