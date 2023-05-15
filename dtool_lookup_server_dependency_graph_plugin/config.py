@@ -1,11 +1,10 @@
 import json
 import os
 
-from dtool_lookup_server import mongo, MONGO_COLLECTION
-
-from . import __version__
-
 AFFIRMATIVE_EXPRESSIONS = ['true', '1', 'y', 'yes', 'on']
+
+
+CONFIG_SECRETS_TO_OBFUSCATE = []
 
 
 class Config(object):
@@ -50,13 +49,3 @@ class Config(object):
     # of cached dependency views:
     DYNAMIC_DEPENDENCY_KEYS = os.environ.get('DTOOL_LOOKUP_SERVER_DYNAMIC_DEPENDENCY_KEYS',
                                              'True').lower() in AFFIRMATIVE_EXPRESSIONS
-
-    @classmethod
-    def to_dict(cls):
-        """Convert server configuration into dict."""
-        d = {'version': __version__}
-        for k, v in cls.__dict__.items():
-            # select only capitalized fields
-            if k.upper() == k:
-                d[k.lower()] = v
-        return d
