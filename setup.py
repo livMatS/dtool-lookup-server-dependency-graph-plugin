@@ -26,9 +26,9 @@ setup(
     },
     setup_requires=['setuptools_scm'],
     install_requires=[
-        "dtool-lookup-server>=0.17.2",
+        "dtool-lookup-server>=0.18.0",
         "dtoolcore>=3.17.0",
-        "dtool-lookup-server-direct-mongo-plugin"
+        "dtool-lookup-server-direct-mongo-plugin>=0.2.0"
     ],
     download_url="{}/tarball/{}".format(url, version),
     license="MIT",
