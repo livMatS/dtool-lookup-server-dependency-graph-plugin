@@ -9,10 +9,10 @@ jobs:
       matrix:
         python-version: ['3.7', '3.8', '3.9', '3.10']
         mongodb-version: ['4.2', '4.4', '5.0', '6.0']
-        dtool-lookup-server-version: [main]
-        dtool-lookup-server-search-plugin-mongo-version: [main]
-        dtool-lookup-server-retrieve-plugin-mongo-version: [main]
-        dtool-lookup-server-direct-mongo-plugin: [main]
+        dtool-lookup-server-version: ['0.18.0']
+        dtool-lookup-server-search-plugin-mongo-version: ['0.2.0']
+        dtool-lookup-server-retrieve-plugin-mongo-version: ['0.2.0']
+        dtool-lookup-server-direct-mongo-plugin: ['0.2.0']
 
     steps:
     - name: Git checkout
@@ -36,11 +36,10 @@ jobs:
 
     - name: Install server, search and retrieve plugins
       run: |
-        # This should move into the strategy matrix once released 
-        pip install git+https://github.com/jotelha/dtool-lookup-server.git@${{ matrix.dtool-lookup-server-version }}
-        pip install git+https://github.com/jotelha/dtool-lookup-server-search-plugin-mongo.git@${{ matrix.dtool-lookup-server-search-plugin-mongo-version }}
-        pip install git+https://github.com/jotelha/dtool-lookup-server-retrieve-plugin-mongo.git@${{ matrix.dtool-lookup-server-retrieve-plugin-mongo-version }}
-        pip install git+https://github.com/livMatS/dtool-lookup-server-direct-mongo-plugin.git@${{ matrix.dtool-lookup-server-direct-mongo-plugin }}
+        pip install dtool-lookup-server==${{ matrix.dtool-lookup-server-version }}
+        pip install dtool-lookup-server-search-plugin-mongo==${{ matrix.dtool-lookup-server-search-plugin-mongo-version }}
+        pip install dtool-lookup-server-retrieve-plugin-mongo==${{ matrix.dtool-lookup-server-retrieve-plugin-mongo-version }}
+        pip install dtool-lookup-server-direct-mongo-plugin==${{ matrix.dtool-lookup-server-direct-mongo-plugin }}
 
     - name: Remaining requirements
       run: |
