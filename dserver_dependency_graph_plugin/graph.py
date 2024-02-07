@@ -1,7 +1,7 @@
 """Aggregation pipelines for graph operations."""
 
-from dtool_lookup_server_dependency_graph_plugin.config import Config as dependency_graph_plugin_config
-from dtool_lookup_server_direct_mongo_plugin.config import Config as direct_mongo_plugin_config
+from dserver_dependency_graph_plugin.config import Config as dependency_graph_plugin_config
+from dserver_direct_mongo_plugin.config import Config as direct_mongo_plugin_config
 
 # a regular expression to filter valid v4 UUIDs
 UUID_v4_REGEX = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}'

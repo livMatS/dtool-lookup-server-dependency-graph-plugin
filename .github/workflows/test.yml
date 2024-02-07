@@ -9,10 +9,10 @@ jobs:
       matrix:
         python-version: ['3.7', '3.8', '3.9', '3.10']
         mongodb-version: ['4.2', '4.4', '5.0', '6.0']
-        dtool-lookup-server-version: ['0.18.0']
-        dtool-lookup-server-search-plugin-mongo-version: ['0.2.0']
-        dtool-lookup-server-retrieve-plugin-mongo-version: ['0.2.0']
-        dtool-lookup-server-direct-mongo-plugin: ['0.2.0']
+        dserver-version: ['0.18.0']
+        dserver-search-plugin-mongo-version: ['0.2.0']
+        dserver-retrieve-plugin-mongo-version: ['0.2.0']
+        dserver-direct-mongo-plugin: ['0.2.0']
 
     steps:
     - name: Git checkout
@@ -36,10 +36,10 @@ jobs:
 
     - name: Install server, search and retrieve plugins
       run: |
-        pip install dtool-lookup-server==${{ matrix.dtool-lookup-server-version }}
-        pip install dtool-lookup-server-search-plugin-mongo==${{ matrix.dtool-lookup-server-search-plugin-mongo-version }}
-        pip install dtool-lookup-server-retrieve-plugin-mongo==${{ matrix.dtool-lookup-server-retrieve-plugin-mongo-version }}
-        pip install dtool-lookup-server-direct-mongo-plugin==${{ matrix.dtool-lookup-server-direct-mongo-plugin }}
+        pip install dserver==${{ matrix.dserver-version }}
+        pip install dserver-search-plugin-mongo==${{ matrix.dserver-search-plugin-mongo-version }}
+        pip install dserver-retrieve-plugin-mongo==${{ matrix.dserver-retrieve-plugin-mongo-version }}
+        pip install dserver-direct-mongo-plugin==${{ matrix.dserver-direct-mongo-plugin }}
 
     - name: Remaining requirements
       run: |
