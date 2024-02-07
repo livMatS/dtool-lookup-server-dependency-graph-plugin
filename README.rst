@@ -1,18 +1,18 @@
 Dtool Lookup Server Dependency Graph Plugin
 ===========================================
 
-.. image:: https://img.shields.io/github/actions/workflow/status/livMatS/dtool-lookup-server-dependency-graph-plugin/test.yml?branch=main
-    :target: https://github.com/livMatS/dtool-lookup-server-dependency-graph-plugin/actions/workflows/test.yml
+.. image:: https://img.shields.io/github/actions/workflow/status/livMatS/dserver-dependency-graph-plugin/test.yml?branch=main
+    :target: https://github.com/livMatS/dserver-dependency-graph-plugin/actions/workflows/test.yml
     :alt: GitHub Workflow Status
-.. image:: https://img.shields.io/pypi/v/dtool-lookup-server-dependency-graph-plugin
+.. image:: https://img.shields.io/pypi/v/dserver-dependency-graph-plugin
     :alt: PyPI
-    :target: https://pypi.org/project/dtool-lookup-server-dependency-graph-plugin/
-.. image:: https://img.shields.io/github/v/tag/livMatS/dtool-lookup-server-dependency-graph-plugin
+    :target: https://pypi.org/project/dserver-dependency-graph-plugin/
+.. image:: https://img.shields.io/github/v/tag/livMatS/dserver-dependency-graph-plugin
     :alt: GitHub tag (latest by date)
-    :target: https://github.com/livMatS/dtool-lookup-server-dependency-graph-plugin/tags
+    :target: https://github.com/livMatS/dserver-dependency-graph-plugin/tags
 
-- GitHub: https://github.com/livMatS/dtool-lookup-server-dependency-graph-plugin
-- PyPI: https://pypi.python.org/pypi/dtool-lookup-server-dependency-graph-plugin
+- GitHub: https://github.com/livMatS/dserver-dependency-graph-plugin
+- PyPI: https://pypi.python.org/pypi/dserver-dependency-graph-plugin
 - Free software: MIT License
 
 
@@ -34,11 +34,11 @@ However, if one has to manage more than a hundred datasets it can be helpful
 to have the datasets' metadata stored in a central server to enable one to
 quickly find datasets of interest.
 
-The `dtool-lookup-server <https://github.com/jic-dtool/dtool-lookup-server>`_
+The `dserver <https://github.com/jic-dtool/dserver>`_
 provides a web API for registering datasets' metadata
 and provides functionality to lookup, list and search for datasets.
 
-This plugin enables the dtool-lookup-server to directly provide all
+This plugin enables the dserver to directly provide all
 datasets within a specific dependency graph.
 
 
@@ -49,7 +49,7 @@ Install the dtool lookup server dependency graph plugin
 
 .. code-block:: bash
 
-    $ pip install dtool-lookup-server-dependency-graph-plugin
+    $ pip install dserver-dependency-graph-plugin
 
 Setup and configuration
 -----------------------
