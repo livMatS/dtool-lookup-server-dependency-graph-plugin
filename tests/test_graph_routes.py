@@ -24,7 +24,7 @@ def test_query_dependency_graph_by_default_keys(tmp_app_with_dependent_data, tes
             continue  # skip unrelated family friend
 
         r = tmp_app_with_dependent_data.get(
-            "/dataset/uuids/{}".format(p['uuid']),
+            "/uuids/{}".format(p['uuid']),
             headers=headers,
         )
         assert r.status_code == 200
