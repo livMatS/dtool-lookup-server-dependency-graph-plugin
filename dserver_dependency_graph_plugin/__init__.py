@@ -30,10 +30,10 @@ from flask_smorest.pagination import PaginationParameters
 
 from pymongo import MongoClient
 
-from dtool_lookup_server import AuthenticationError, ExtensionABC
-from dtool_lookup_server.sql_models import DatasetSchema
-from dtool_lookup_server.utils import _preprocess_privileges
-from dtool_lookup_server_direct_mongo_plugin.utils import _dict_to_mongo_query
+from dserver import AuthenticationError, ExtensionABC
+from dserver.sql_models import DatasetSchema
+from dserver.utils import _preprocess_privileges
+from dserver_direct_mongo_plugin.utils import _dict_to_mongo_query
 
 from .schemas import DependencyKeysSchema
 
@@ -218,7 +218,7 @@ def dependency_graph_by_user_and_uuid(username, uuid, dependency_keys=Config.DEP
         logger.warning(
             "Received dependency graph request for dynamic keys '{}' from user "
             "'{}', but dynamic dependency key feature is disabled. Set env "
-            "var DTOOL_LOOKUP_SERVER_DYNAMIC_DEPENDENCY_KEYS=True to enable.".format(
+            "var DSERVER_DYNAMIC_DEPENDENCY_KEYS=True to enable.".format(
                 dependency_keys, username))
         dependency_keys = Config.DEPENDENCY_KEYS
 
@@ -262,7 +262,7 @@ def dependency_graph_by_user_and_uuid(username, uuid, dependency_keys=Config.DEP
     return datasets
 
 
-@graph_bp.route("/lookup/<uuid>", methods=["GET"])
+@graph_bp.route("/uuids/<uuid>", methods=["GET"])
 @graph_bp.response(200, DatasetSchema(many=True))
 @graph_bp.paginate()
 @jwt_required()
@@ -282,7 +282,7 @@ def lookup_dependency_graph_by_default_keys(pagination_parameters: PaginationPar
     )
 
 
-@graph_bp.route("/lookup/<uuid>", methods=["POST"])
+@graph_bp.route("/uuids/<uuid>", methods=["POST"])
 @graph_bp.arguments(DependencyKeysSchema(partial=True))
 @graph_bp.response(200, DatasetSchema(many=True))
 @graph_bp.paginate()
@@ -337,7 +337,7 @@ class DependencyGraphExtension(ExtensionABC):
             raise(RuntimeError("Please set the MONGO_COLLECTION environment variable"))  # NOQA
 
     def register_dataset(self, dataset_info):
-        """Does nothing, relies on dtool-lookup-server-direct-mongo-plugin."""
+        """Does nothing, relies on dserver-direct-mongo-plugin."""
         pass
 
     def get_config(self):
