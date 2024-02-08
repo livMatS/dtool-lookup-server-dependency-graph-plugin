@@ -262,7 +262,7 @@ def dependency_graph_by_user_and_uuid(username, uuid, dependency_keys=Config.DEP
     return datasets
 
 
-@graph_bp.route("/lookup/<uuid>", methods=["GET"])
+@graph_bp.route("/uuids/<uuid>", methods=["GET"])
 @graph_bp.response(200, DatasetSchema(many=True))
 @graph_bp.paginate()
 @jwt_required()
@@ -282,7 +282,7 @@ def lookup_dependency_graph_by_default_keys(pagination_parameters: PaginationPar
     )
 
 
-@graph_bp.route("/lookup/<uuid>", methods=["POST"])
+@graph_bp.route("/uuids/<uuid>", methods=["POST"])
 @graph_bp.arguments(DependencyKeysSchema(partial=True))
 @graph_bp.response(200, DatasetSchema(many=True))
 @graph_bp.paginate()
