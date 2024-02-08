@@ -61,7 +61,7 @@ With
 
 .. code-block:: bash
 
-    export DTOOL_LOOKUP_SERVER_ENABLE_DEPENDENCY_VIEW=True
+    export DSERVER_ENABLE_DEPENDENCY_VIEW=True
 
 the underlying database will offer a view on the default collection.
 This view offers an on-the-fly-generated collection of undirected per-dataset
@@ -70,14 +70,14 @@ in both directions. With
 
 .. code-block:: bash
 
-    export DTOOL_LOOKUP_SERVER_FORCE_REBUILD_DEPENDENCY_VIEW=True
+    export DSERVER_FORCE_REBUILD_DEPENDENCY_VIEW=True
 
 this view is reestablished at every query. This is required to apply changes to
 related options, such as the JSON-formatted list
 
 .. code-block:: bash
 
-    export DTOOL_LOOKUP_SERVER_DEPENDENCY_KEYS='["readme.derived_from.uuid", "annotations.source_dataset_uuid"]'
+    export DSERVER_DEPENDENCY_KEYS='["readme.derived_from.uuid", "annotations.source_dataset_uuid"]'
 
 which indicates at which keys to look for source dataset(s) by UUID. The example
 above illustrates the default. All keys are treated equivalently and nested
@@ -100,16 +100,16 @@ Setting
 
 .. code-block:: bash
 
-     export DTOOL_LOOKUP_SERVER_DYNAMIC_DEPENDENCY_KEYS=True
+     export DSERVER_DYNAMIC_DEPENDENCY_KEYS=True
 
 will allow the client side to request graphs spanned by arbitrary dependency
 keys (see below). The related options
 
 .. code-block:: bash
 
-    export DTOOL_LOOKUP_SERVER_MONGO_DEPENDENCY_VIEW_PREFIX=dep
-    export DTOOL_LOOKUP_SERVER_MONGO_DEPENDENCY_VIEW_BOOKKEEPING=dep_views
-    export DTOOL_LOOKUP_SERVER_MONGO_DEPENDENCY_VIEW_CACHE_SIZE=10
+    export DSERVER_MONGO_DEPENDENCY_VIEW_PREFIX=dep
+    export DSERVER_MONGO_DEPENDENCY_VIEW_BOOKKEEPING=dep_views
+    export DSERVER_MONGO_DEPENDENCY_VIEW_CACHE_SIZE=10
 
 control internal behavior. See source code and examples below.
 
@@ -157,9 +157,9 @@ URI, the query will yield one arbitrary hit in such a case.
 Looking up graphs spanned by arbitrary dependency keys
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If ``DTOOL_LOOKUP_SERVER_DYNAMIC_DEPENDENCY_KEYS=True``, then the client may
+If ``DSERVER_DYNAMIC_DEPENDENCY_KEYS=True``, then the client may
 ask the server to explore a graph spanned by dependency keys differing from
-the server-side defaults in ``DTOOL_LOOKUP_SERVER_DEPENDENCY_KEYS``. This
+the server-side defaults in ``DSERVER_DEPENDENCY_KEYS``. This
 happens as above, but with via a ``POST`` request with a JSON-formatted list
 of desired dependency keys attached
 
@@ -238,5 +238,5 @@ and an according entry within ``dep_views``
     { "_id" : ObjectId("5f7df4feaea9fcf239f68dbd"), "name" : "dep:2020-10-07T17:03:58.831223", "keys" : [ "another.possibly_nested.dependency_key" ], "accessed_on" : ISODate("2020-10-07T17:03:58.833Z") }
 
 If the total number of such cached views exceeds the allowed maximum value
-configured in ``DTOOL_LOOKUP_SERVER_MONGO_DEPENDENCY_VIEW_CACHE_SIZE``, then
+configured in ``DSERVER_MONGO_DEPENDENCY_VIEW_CACHE_SIZE``, then
 the view accessed least recently is dropped.

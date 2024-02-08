@@ -218,7 +218,7 @@ def dependency_graph_by_user_and_uuid(username, uuid, dependency_keys=Config.DEP
         logger.warning(
             "Received dependency graph request for dynamic keys '{}' from user "
             "'{}', but dynamic dependency key feature is disabled. Set env "
-            "var DTOOL_LOOKUP_SERVER_DYNAMIC_DEPENDENCY_KEYS=True to enable.".format(
+            "var DSERVER_DYNAMIC_DEPENDENCY_KEYS=True to enable.".format(
                 dependency_keys, username))
         dependency_keys = Config.DEPENDENCY_KEYS
 
