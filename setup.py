@@ -28,7 +28,7 @@ setup(
     install_requires=[
         "dserver>=0.18.0",
         "dtoolcore>=3.17.0",
-        "dserver-direct-mongo-plugin>=0.2.0"
+        "dserver-direct-mongo-plugin"
     ],
     download_url="{}/tarball/{}".format(url, version),
     license="MIT",

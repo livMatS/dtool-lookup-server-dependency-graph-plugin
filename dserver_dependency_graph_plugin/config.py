@@ -13,20 +13,20 @@ class Config(object):
     # collections of undirected per-dataset adjacency lists in order to
     # facilitate searching dataset dependeny graphs in both directions.
     # See https://docs.mongodb.com/manual/core/views/.
-    ENABLE_DEPENDENCY_VIEW = os.environ.get('DTOOL_LOOKUP_SERVER_ENABLE_DEPENDENCY_VIEW',
+    ENABLE_DEPENDENCY_VIEW = os.environ.get('DSERVER_ENABLE_DEPENDENCY_VIEW',
                                             'True').lower() in AFFIRMATIVE_EXPRESSIONS
 
     # Generated dependency views are named by current UTC datetime in ISO format, prefixed by
-    MONGO_DEPENDENCY_VIEW_PREFIX = os.environ.get('DTOOL_LOOKUP_SERVER_MONGO_DEPENDENCY_VIEW_PREFIX', 'dep:')
+    MONGO_DEPENDENCY_VIEW_PREFIX = os.environ.get('DSERVER_MONGO_DEPENDENCY_VIEW_PREFIX', 'dep:')
 
     # name of bookkeeping collection for cached dependency views
-    MONGO_DEPENDENCY_VIEW_BOOKKEEPING = os.environ.get('DTOOL_LOOKUP_SERVER_MONGO_DEPENDENCY_VIEW_BOOKKEEPING', 'dep_views')
+    MONGO_DEPENDENCY_VIEW_BOOKKEEPING = os.environ.get('DSERVER_MONGO_DEPENDENCY_VIEW_BOOKKEEPING', 'dep_views')
 
     # maximum number of cached views
-    MONGO_DEPENDENCY_VIEW_CACHE_SIZE = int(os.environ.get('DTOOL_LOOKUP_SERVER_MONGO_DEPENDENCY_VIEW_CACHE_SIZE', '10'))
+    MONGO_DEPENDENCY_VIEW_CACHE_SIZE = int(os.environ.get('DSERVER_MONGO_DEPENDENCY_VIEW_CACHE_SIZE', '10'))
 
     # Enforce rebuilding dependency views at each query.
-    FORCE_REBUILD_DEPENDENCY_VIEW = os.environ.get('DTOOL_LOOKUP_SERVER_FORCE_REBUILD_DEPENDENCY_VIEW',
+    FORCE_REBUILD_DEPENDENCY_VIEW = os.environ.get('DSERVER_FORCE_REBUILD_DEPENDENCY_VIEW',
                                                    'False').lower() in AFFIRMATIVE_EXPRESSIONS
 
     # Specify a key or multiple possible keys that hold unidirectional
@@ -38,7 +38,7 @@ class Config(object):
         'annotations.source_dataset_uuid'
     ]
 
-    dep_key = os.environ.get('DTOOL_LOOKUP_SERVER_DEPENDENCY_KEYS', '')
+    dep_key = os.environ.get('DSERVER_DEPENDENCY_KEYS', '')
     if len(dep_key) > 0:
         try:
             DEPENDENCY_KEYS = json.loads(dep_key)
@@ -47,5 +47,5 @@ class Config(object):
 
     # Allow clients to submit dynamic dependency keys and evoke the generation
     # of cached dependency views:
-    DYNAMIC_DEPENDENCY_KEYS = os.environ.get('DTOOL_LOOKUP_SERVER_DYNAMIC_DEPENDENCY_KEYS',
+    DYNAMIC_DEPENDENCY_KEYS = os.environ.get('DSERVER_DYNAMIC_DEPENDENCY_KEYS',
                                              'True').lower() in AFFIRMATIVE_EXPRESSIONS
