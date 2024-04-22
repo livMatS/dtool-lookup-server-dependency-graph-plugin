@@ -141,8 +141,8 @@ def random_string(
 @pytest.fixture
 def tmp_app_with_users(request):
     from flask import current_app
-    from dserver import create_app, sql_db
-    from dserver.utils import (
+    from dtool_lookup_server import create_app, sql_db
+    from dtool_lookup_server.utils import (
         register_users,
         register_base_uri,
         put_permissions,
@@ -222,9 +222,9 @@ def tmp_app_with_users(request):
 @pytest.fixture
 def tmp_app_with_dependent_data(request):
     from flask import current_app
-    from dserver.config import Config
-    from dserver import create_app, sql_db
-    from dserver.utils import (
+    from dtool_lookup_server.config import Config
+    from dtool_lookup_server import create_app, sql_db
+    from dtool_lookup_server.utils import (
         register_users,
         register_base_uri,
         register_dataset,

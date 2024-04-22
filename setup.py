@@ -20,13 +20,13 @@ setup(
     use_scm_version={"local_scheme": local_scheme},
     url=url,
     entry_points={
-        'dserver.extension': [
+        'dtool_lookup_server.extension': [
             'DependencyGraphExtension=dserver_dependency_graph_plugin:DependencyGraphExtension',
         ],
     },
     setup_requires=['setuptools_scm'],
     install_requires=[
-        "dserver>=0.18.0",
+        "dtool-lookup-server>=0.18.0",
         "dtoolcore>=3.17.0",
         "dserver-direct-mongo-plugin"
     ],

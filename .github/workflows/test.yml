@@ -9,7 +9,7 @@ jobs:
       matrix:
         python-version: ['3.7', '3.8', '3.9', '3.10']
         mongodb-version: ['4.2', '4.4', '5.0', '6.0']
-        dserver-version: [main]
+        dtool-lookup-server-version: [main]
         dserver-search-plugin-mongo-version: [main]
         dserver-retrieve-plugin-mongo-version: [main]
         dserver-direct-mongo-plugin-version: [main]
@@ -36,10 +36,10 @@ jobs:
 
     - name: Install server, search and retrieve plugins
       run: |
-        pip install git+https://github.com/jotelha/dserver.git@${{ matrix.dserver-version }}
-        pip install git+https://github.com/jotelha/dserver-search-plugin-mongo.git@${{ matrix.dserver-search-plugin-mongo-version }}
-        pip install git+https://github.com/jotelha/dserver-retrieve-plugin-mongo.git@${{ matrix.dserver-retrieve-plugin-mongo-version }}
-        pip install git+https://github.com/jotelha/dserver-direct-mongo-plugin.git@${{ matrix.dserver-direct-mongo-plugin-version }}
+        pip install git+https://github.com/livMatS/dtool-lookup-server.git@${{ matrix.dtool-lookup-server-version }}
+        pip install git+https://github.com/livMatS/dserver-search-plugin-mongo.git@${{ matrix.dserver-search-plugin-mongo-version }}
+        pip install git+https://github.com/livMatS/dserver-retrieve-plugin-mongo.git@${{ matrix.dserver-retrieve-plugin-mongo-version }}
+        pip install git+https://github.com/livMatS/dserver-direct-mongo-plugin.git@${{ matrix.dserver-direct-mongo-plugin-version }}
 
     - name: Remaining requirements
       run: |
