@@ -1,5 +1,5 @@
-Dtool Lookup Server Dependency Graph Plugin
-===========================================
+dserver Dependency Graph Plugin
+===============================
 
 .. image:: https://img.shields.io/github/actions/workflow/status/livMatS/dtool-lookup-server-dependency-graph-plugin/test.yml?branch=main
     :target: https://github.com/livMatS/dtool-lookup-server-dependency-graph-plugin/actions/workflows/test.yml
