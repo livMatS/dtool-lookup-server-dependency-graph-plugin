@@ -12,7 +12,7 @@ def test_query_dependency_graph_by_default_keys(tmp_app_with_dependent_data, tes
     uuid = "a2218059-5bd0-4690-b090-062faf08e044"  # brother
 
     r = tmp_app_with_dependent_data.get(
-        "/graph/lookup/{}".format(uuid),
+        "/graph/uuids/{}".format(uuid),
         headers=headers,
     )
     assert r.status_code == 200
@@ -24,7 +24,7 @@ def test_query_dependency_graph_by_default_keys(tmp_app_with_dependent_data, tes
             continue  # skip unrelated family friend
 
         r = tmp_app_with_dependent_data.get(
-            "/dataset/lookup/{}".format(p['uuid']),
+            "/uuids/{}".format(p['uuid']),
             headers=headers,
         )
         assert r.status_code == 200
@@ -53,7 +53,7 @@ def test_query_dependency_graph_by_custom_keys(tmp_app_with_dependent_data, test
     dependency_keys = ["readme.derived_from.uuid", "some_nonexistant_key"]
 
     r = tmp_app_with_dependent_data.post(
-        "/graph/lookup/{}".format(uuid),
+        "/graph/uuids/{}".format(uuid),
         headers=headers,
         data=json.dumps({"dependency_keys": dependency_keys}),
         content_type="application/json"
@@ -67,7 +67,7 @@ def test_query_dependency_graph_by_custom_keys(tmp_app_with_dependent_data, test
             continue  # skip unrelated family friend
 
         r = tmp_app_with_dependent_data.get(
-            "/dataset/lookup/{}".format(p['uuid']),
+            "/uuids/{}".format(p['uuid']),
             headers=headers,
         )
         assert r.status_code == 200
@@ -96,7 +96,7 @@ def test_query_dependency_graph_by_custom_nonexistant_keys(tmp_app_with_dependen
     dependency_keys = ["some_nonexistant_key"]
 
     r = tmp_app_with_dependent_data.post(
-        "/graph/lookup/{}".format(uuid),
+        "/graph/uuids/{}".format(uuid),
         headers=headers,
         data=json.dumps({"dependency_keys": dependency_keys}),
         content_type="application/json"
@@ -110,7 +110,7 @@ def test_query_dependency_graph_by_custom_nonexistant_keys(tmp_app_with_dependen
             continue  # skip unrelated family friend
 
         r = tmp_app_with_dependent_data.get(
-            "/dataset/lookup/{}".format(p['uuid']),
+            "/uuids/{}".format(p['uuid']),
             headers=headers,
         )
         assert r.status_code == 200
@@ -145,7 +145,7 @@ def test_generate_many_dependency_views(tmp_app_with_dependent_data, testing_fam
             continue  # skip unrelated family friend
 
         r = tmp_app_with_dependent_data.get(
-            "/dataset/lookup/{}".format(p['uuid']),
+            "/uuids/{}".format(p['uuid']),
             headers=headers,
         )
         assert r.status_code == 200
@@ -164,7 +164,7 @@ def test_generate_many_dependency_views(tmp_app_with_dependent_data, testing_fam
 
     for dependency_keys in dependency_keys_list:
         r = tmp_app_with_dependent_data.post(
-            "/graph/lookup/{}".format(uuid),
+            "/graph/uuids/{}".format(uuid),
             headers=headers,
             data=json.dumps({"dependency_keys": dependency_keys}),
             content_type="application/json"

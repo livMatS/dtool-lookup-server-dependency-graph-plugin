@@ -7,28 +7,28 @@ def local_scheme(version):
     to be able to upload to Test PyPI"""
     return ""
 
-url = "https://github.com/IMTEK-Simulation/dtool-lookup-server-dependency-graph-plugin"
+url = "https://github.com/livMatS/dserver-dependency-graph-plugin"
 readme = open('README.rst').read()
 
 setup(
-    name="dtool-lookup-server-dependency-graph-plugin",
-    packages=["dtool_lookup_server_dependency_graph_plugin"],
-    description="dtool lookup server plugin for querying dataset dependency graphs",
+    name="dserver-dependency-graph-plugin",
+    packages=["dserver_dependency_graph_plugin"],
+    description="dserver plugin for querying dataset dependency graphs",
     long_description=readme,
     author="Johannes Hörmann",
     author_email="johannes.hoermann@imtek.uni-freiburg.de",
     use_scm_version={"local_scheme": local_scheme},
     url=url,
     entry_points={
-        'dtool_lookup_server.extension': [
-            'DependencyGraphExtension=dtool_lookup_server_dependency_graph_plugin:DependencyGraphExtension',
+        'dserver.extension': [
+            'DependencyGraphExtension=dserver_dependency_graph_plugin:DependencyGraphExtension',
         ],
     },
     setup_requires=['setuptools_scm'],
     install_requires=[
-        "dtool-lookup-server>=0.18.0",
+        "dserver>=0.18.0",
         "dtoolcore>=3.17.0",
-        "dtool-lookup-server-direct-mongo-plugin>=0.2.0"
+        "dserver-direct-mongo-plugin"
     ],
     download_url="{}/tarball/{}".format(url, version),
     license="MIT",
