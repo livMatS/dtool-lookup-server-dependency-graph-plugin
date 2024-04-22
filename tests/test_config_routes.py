@@ -30,7 +30,7 @@ def test_config_info_route(tmp_app_with_users, snowwhite_token):  # NOQA
         'mongo_dependency_view_prefix': 'dep:',
     }
 
-    response = json.loads(r.data.decode("utf-8"))
+    response = json.loads(r.data.decode("utf-8"))['config']
 
     marker = comparison_marker_from_obj(expected_response)
     assert compare_marked_nested(response, expected_response, marker)
