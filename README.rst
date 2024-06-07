@@ -1,11 +1,11 @@
 dserver Dependency Graph Plugin
 ===============================
 
-.. |dtool| image:: icons/22x22/dtool_logo.png
+.. |dtool| image:: https://github.com/livMatS/dserver-dependency-graph-plugin/blob/main/icons/22x22/dtool_logo.png?raw=True
     :height: 20px
     :target: https://github.com/livMatS/dserver-dependency-graph-plugin
-.. |pypi| image:: https://badge.fury.io/py/dserver-dependency-graph-plugin.svg
-    :target: http://badge.fury.io/py/dserver-dependency-graph-plugin
+.. |pypi| image:: https://img.shields.io/pypi/v/dserver-dependency-graph-plugin
+    :target: https://pypi.org/project/dserver-dependency-graph-plugin/
 .. |tag| image:: https://img.shields.io/github/v/tag/livMatS/dserver-dependency-graph-plugin
     :target: https://github.com/livMatS/dserver-dependency-graph-plugin/tags
 .. |test| image:: https://img.shields.io/github/actions/workflow/status/livMatS/dserver-dependency-graph-plugin/test.yml?branch=main
