@@ -9,7 +9,7 @@ jobs:
       matrix:
         python-version: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12']
         mongodb-version: ['4.2', '4.4', '5.0', '6.0']
-        dtool-lookup-server-version: [main]
+        dtool-lookup-server-version: [master]
         dserver-search-plugin-mongo-version: [main]
         dserver-retrieve-plugin-mongo-version: [main]
         dserver-direct-mongo-plugin-version: [main]
@@ -36,15 +36,14 @@ jobs:
 
     - name: Install server, search and retrieve plugins
       run: |
-        pip install git+https://github.com/livMatS/dtool-lookup-server.git@${{ matrix.dtool-lookup-server-version }}
+        pip install git+https://github.com/jic-dtool/dtool-lookup-server.git@${{ matrix.dtool-lookup-server-version }}
         pip install git+https://github.com/livMatS/dserver-search-plugin-mongo.git@${{ matrix.dserver-search-plugin-mongo-version }}
         pip install git+https://github.com/livMatS/dserver-retrieve-plugin-mongo.git@${{ matrix.dserver-retrieve-plugin-mongo-version }}
         pip install git+https://github.com/livMatS/dserver-direct-mongo-plugin.git@${{ matrix.dserver-direct-mongo-plugin-version }}
 
     - name: Remaining requirements
       run: |
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install .
+        pip install .[test]
         pip list
 
     - name: Lint with flake8
