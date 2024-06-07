@@ -1,15 +1,17 @@
 dserver Dependency Graph Plugin
 ===============================
 
-.. image:: https://img.shields.io/github/actions/workflow/status/livMatS/dserver-dependency-graph-plugin/test.yml?branch=main
-    :target: https://github.com/livMatS/dserver-dependency-graph-plugin/actions/workflows/test.yml
-    :alt: GitHub Workflow Status
-.. image:: https://img.shields.io/pypi/v/dserver-dependency-graph-plugin
-    :alt: PyPI
-    :target: https://pypi.org/project/dserver-dependency-graph-plugin/
-.. image:: https://img.shields.io/github/v/tag/livMatS/dserver-dependency-graph-plugin
-    :alt: GitHub tag (latest by date)
+.. |dtool| image:: icons/22x22/dtool_logo.png
+    :height: 20px
+    :target: https://github.com/livMatS/dserver-dependency-graph-plugin
+.. |pypi| image:: https://badge.fury.io/py/dserver-dependency-graph-plugin.svg
+    :target: http://badge.fury.io/py/dserver-dependency-graph-plugin
+.. |tag| image:: https://img.shields.io/github/v/tag/livMatS/dserver-dependency-graph-plugin
     :target: https://github.com/livMatS/dserver-dependency-graph-plugin/tags
+.. |test| image:: https://img.shields.io/github/actions/workflow/status/livMatS/dserver-dependency-graph-plugin/test.yml?branch=main
+    :target: https://github.com/livMatS/dserver-dependency-graph-plugin/actions/workflows/test.yml
+
+|dtool| |pypi| |tag| |test|
 
 - GitHub: https://github.com/livMatS/dserver-dependency-graph-plugin
 - PyPI: https://pypi.python.org/pypi/dserver-dependency-graph-plugin
