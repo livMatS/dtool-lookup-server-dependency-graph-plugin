@@ -8,7 +8,7 @@ dserver Dependency Graph Plugin
     :target: https://pypi.org/project/dserver-dependency-graph-plugin/
 .. |tag| image:: https://img.shields.io/github/v/tag/livMatS/dserver-dependency-graph-plugin
     :target: https://github.com/livMatS/dserver-dependency-graph-plugin/tags
-.. |test| image:: https://img.shields.io/github/actions/workflow/status/livMatS/dserver-dependency-graph-plugin/test.yml?branch=main
+.. |test| image:: https://img.shields.io/github/actions/workflow/status/livMatS/dserver-dependency-graph-plugin/test.yml?branch=main&label=tests
     :target: https://github.com/livMatS/dserver-dependency-graph-plugin/actions/workflows/test.yml
 
 |dtool| |pypi| |tag| |test|
