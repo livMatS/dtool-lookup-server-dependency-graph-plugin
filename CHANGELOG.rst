@@ -1,6 +1,11 @@
 Change log for dserver-dependency-graph-plugin
 ==============================================
 
+0.4.0 (13Jun24)
+---------------
+
+* * Exchanged ``dtool-lookup-server`` dependency for ``dservercore``
+
 0.3.0 (07Jun24)
 ---------------
 
