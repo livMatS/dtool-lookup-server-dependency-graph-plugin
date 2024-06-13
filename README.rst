@@ -36,7 +36,7 @@ However, if one has to manage more than a hundred datasets it can be helpful
 to have the datasets' metadata stored in a central server to enable one to
 quickly find datasets of interest.
 
-The `dtool-lookup-server <https://github.com/jic-dtool/dtool-lookup-server>`_
+The `dservercore <https://github.com/jic-dtool/dservercore>`_
 provides a web API for registering datasets' metadata
 and provides functionality to lookup, list and search for datasets.
 
@@ -47,7 +47,7 @@ datasets within a specific dependency graph.
 Installation
 ------------
 
-Install the dtool lookup server dependency graph plugin
+Install the dserver dependency graph plugin
 
 .. code-block:: bash
 
@@ -120,10 +120,10 @@ bash. Enclosing single quotes are not to be part of the actual variable value
 when environment variables are configured elsewhere.
 
 
-The dtool lookup server API
----------------------------
+dserver API
+-----------
 
-The dtool lookup server makes use of the Authorized header to pass through the
+dserver makes use of the Authorized header to pass through the
 JSON web token for authorization. Below we create environment variables for the
 token and the header used in the ``curl`` commands
 

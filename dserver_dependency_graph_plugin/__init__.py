@@ -30,9 +30,9 @@ from flask_smorest.pagination import PaginationParameters
 
 from pymongo import MongoClient
 
-from dtool_lookup_server import AuthenticationError, ExtensionABC
-from dtool_lookup_server.sql_models import DatasetSchema
-from dtool_lookup_server.utils import _preprocess_privileges
+from dservercore import AuthenticationError, ExtensionABC
+from dservercore.sql_models import DatasetSchema
+from dservercore.utils import _preprocess_privileges
 from dserver_direct_mongo_plugin.utils import _dict_to_mongo_query
 
 from .schemas import DependencyKeysSchema
