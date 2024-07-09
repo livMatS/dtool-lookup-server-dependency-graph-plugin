@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: Hörmann
+  given-names: Johannes Laurin
+  orcid: 0000-0001-5867-695X
+- family-names: Pastewka
+  given-names: Lars
+  orcid:  0000-0001-8351-7336
+title: dserver-dependency-graph-plugin
+version: 0.4.1
+date-released: 2024-07-09
