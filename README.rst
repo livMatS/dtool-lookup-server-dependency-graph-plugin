@@ -10,8 +10,10 @@ dserver Dependency Graph Plugin
     :target: https://github.com/livMatS/dserver-dependency-graph-plugin/tags
 .. |test| image:: https://img.shields.io/github/actions/workflow/status/livMatS/dserver-dependency-graph-plugin/test.yml?branch=main&label=tests
     :target: https://github.com/livMatS/dserver-dependency-graph-plugin/actions/workflows/test.yml
+.. |zenodo| image:: https://zenodo.org/badge/298694291.svg
+    :target: https://zenodo.org/doi/10.5281/zenodo.12702000
 
-|dtool| |pypi| |tag| |test|
+|dtool| |pypi| |tag| |test| |zenodo|
 
 - GitHub: https://github.com/livMatS/dserver-dependency-graph-plugin
 - PyPI: https://pypi.python.org/pypi/dserver-dependency-graph-plugin
